@@ -1,7 +1,7 @@
 import App from './App';
 import React from 'react';
 import { shallow } from 'enzyme';
-import { wrap } from 'yargs';
+// import { wrap } from 'yargs';
 
 test('toggleAddRecipeForm() modifies isAddRecipeFormDisplayed state value to toggle visibility of a form on the page', () => {
   const wrapper = shallow(<App />)
@@ -69,7 +69,6 @@ test('submitRecipe() modifies the recipes value in state', () => {
 test('typing into the recipe name input updates state', () => {
   const wrapper = shallow(<App />);
   const recipeName = 'White Bread';
-  const recipeInstructions = 'Flour, water, sugar, salt, yeast';
 
   wrapper.setState({
     isAddRecipeFormDisplayed: true,
@@ -81,3 +80,44 @@ test('typing into the recipe name input updates state', () => {
 
   expect(wrapper.state().newRecipeName).toEqual(recipeName);
 })
+
+test('typing into the recipe instructions input updates state', () => {
+  const wrapper = shallow(<App />);
+  const recipeInstructions = 'Flour, water, sugar, salt, yeast';
+
+  wrapper.setState({
+    isAddRecipeFormDisplayed: true,
+  })
+
+  wrapper.find('textarea[name="newRecipeInstructions"]').simulate("change", {    //change simulates alteration to input/select/textarea when value is commited by user
+    target: {name: 'newRecipeInstructions', value: recipeInstructions}    //target is an object
+  })    
+
+  expect(wrapper.state().newRecipeInstructions).toEqual(recipeInstructions);
+})
+
+test('recipe name from recipe in state appears in unordered list', () => {
+  const wrapper = shallow(<App />)
+  const recipeName = 'Korean Beef Tacos';
+  const recipeInstructions = 'Kimchi + beef + taco shells';
+  const submittedRecipe = { name: recipeName, instructions: recipeInstructions }
+
+  wrapper.setState({
+    recipes: [submittedRecipe],
+  })
+
+  expect(wrapper.find('li')).toHaveLength(1);
+  expect(wrapper.find('li').text()).toEqual(recipeName)
+})
+
+
+
+
+
+
+
+
+
+
+
+

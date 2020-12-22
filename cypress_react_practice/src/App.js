@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './App.css';
 import { Component } from 'react';
 
@@ -7,7 +6,9 @@ class App extends Component{
     super();
     this.state = {
       isAddRecipeFormDisplayed: false,
-      recipes: [],
+      recipes: [
+
+      ],
       recipeName: "",
     }
   }
@@ -21,6 +22,21 @@ class App extends Component{
     const value = e.target.value;
     this.setState({ 
       newRecipeName : value,
+    })
+  }
+
+  handleRecipeInstructionsChange = (e) => {
+    const value = e.target.value;
+    this.setState({
+      newRecipeInstructions : value
+    })
+  }
+
+  handleChange = (e) => {
+    const target = e.target;
+    const name = target.name;
+    this.setState({
+      [name]: target.value,
     })
   }
 
@@ -40,9 +56,9 @@ class App extends Component{
     const addNewRecipeForm = 
       <form id="recipe-form" onSubmit={this.submitRecipe}>
         <label htmlFor="newRecipeName">Recipe name: </label>
-        <input type="text" name="newRecipeName" onChange={this.handleRecipeNameChange}/>
+        <input type="text" name="newRecipeName" onChange={this.handleChange}/>
         <label htmlFor="newRecipeInstructions">Instructions: </label>
-        <textarea name="newRecipeInstructions" placeholder="write the recipe instructions here..."/>
+        <textarea name="newRecipeInstructions" placeholder="write the recipe instructions here..." onChange={this.handleChange}/>
         <input type="submit" />
       </form>
     const addRecipeButton = <button id="add-recipe" onClick={this.toggleAddRecipeForm}>Add Recipe</button>
@@ -58,10 +74,13 @@ class App extends Component{
           ? addNewRecipeForm
           : addRecipeButton          
         }
-
-        <p>
-          There are no recipes to list.
-        </p>
+        {
+          this.state.recipes !== undefined && this.state.recipes.length > 0
+          ? <ul>
+              <li>{this.state.recipes[0].name}</li>
+            </ul> 
+          : <p> There are no recipes to list.</p>
+        }
       </div>
     );
   }

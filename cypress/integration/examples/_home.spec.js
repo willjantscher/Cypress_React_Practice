@@ -51,8 +51,4 @@ describe("Home page", () => {
         })
     })
 
-
-
-
-
 })
