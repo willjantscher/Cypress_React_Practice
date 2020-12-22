@@ -127,6 +127,7 @@ test('submitting multiple recipes stores them all in an unordered list', () => {
   expect(wrapper.find('li')).toHaveLength(2);
   expect(wrapper.find('li').at(0).text()).toEqual(recipeName1)
   expect(wrapper.find('li').at(1).text()).toEqual(recipeName2)
+  // console.log(wrapper.find('li').at(0).text())
 })
 
 

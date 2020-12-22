@@ -53,8 +53,6 @@ class App extends Component{
   }
 
   renderRecipes = () => {
-    // console.log(this.state.recipes)
-    // console.log(this.state.recipes[0].name)
     let output = this.state.recipes.map( recipe => <li key={recipe.name}>{recipe.name}</li>);
     return(
       <ul>
