@@ -1,25 +1,42 @@
 import logo from './logo.svg';
 import './App.css';
+import { Component } from 'react';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
+class App extends Component{
+  constructor() {
+    super();
+    this.state = {
+      isAddRecipeFormDisplayed: false,
+    }
+  }
+
+  //toggleAddRecipeForm method
+  toggleAddRecipeForm = () => {
+    this.setState({ isAddRecipeFormDisplayed : !this.state.isAddRecipeFormDisplayed })
+  }
+
+  render() {
+    const addNewRecipeForm = <form id="recipe-form"></form>
+    const addRecipeButton = <button id="add-recipe" onClick={this.toggleAddRecipeForm}>Add Recipe</button>
+
+    return (
+      <div className="App">
+        <header className="App-header">
+          My Recipes
+        </header>
+{/* use ternary statement for this conditional rendering */}
+        {
+          this.state.isAddRecipeFormDisplayed
+          ? addNewRecipeForm
+          : addRecipeButton          
+        }
+
         <p>
-          Edit <code>src/App.js</code> and save to reload.
+          There are no recipes to list.
         </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+      </div>
+    );
+  }
 }
 
 export default App;
