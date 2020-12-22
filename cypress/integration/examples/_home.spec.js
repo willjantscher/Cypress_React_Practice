@@ -27,4 +27,13 @@ describe("Home page", () => {
 
         expect(cy.get('#recipe-form')).to.exist     //when button pressed, the form should exist
     })
+
+    it("contains a form with fields 'Recipe Name' and 'Recipe Instructions' after clicking the 'Add Recipe' button", () => {
+        const addRecipeButton = cy.get('#add-recipe');
+        addRecipeButton.click();
+
+        expect(cy.get('input[name="newRecipeName"]')).to.exist;
+        expect(cy.get('textarea[name="newRecipeInstructions"]')).to.exist;
+        
+    })
 })

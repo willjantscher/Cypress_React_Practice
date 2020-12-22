@@ -16,7 +16,13 @@ class App extends Component{
   }
 
   render() {
-    const addNewRecipeForm = <form id="recipe-form"></form>
+    const addNewRecipeForm = <form id="recipe-form">
+      <label htmlFor="newRecipeName">Recipe name: </label>
+      <input type="text" name="newRecipeName"/>
+      <label htmlFor="newRecipeInstructions">Instructions: </label>
+      <textarea name="newRecipeInstructions" placeholder="write the recipe instructions here..."/>
+      <input type="submit" />
+    </form>
     const addRecipeButton = <button id="add-recipe" onClick={this.toggleAddRecipeForm}>Add Recipe</button>
 
     return (
