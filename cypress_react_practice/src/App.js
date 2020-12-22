@@ -6,9 +6,7 @@ class App extends Component{
     super();
     this.state = {
       isAddRecipeFormDisplayed: false,
-      recipes: [
-
-      ],
+      recipes: [],
       recipeName: "",
     }
   }
@@ -18,19 +16,19 @@ class App extends Component{
     this.setState({ isAddRecipeFormDisplayed : !this.state.isAddRecipeFormDisplayed })
   }
 
-  handleRecipeNameChange = (e) => {
-    const value = e.target.value;
-    this.setState({ 
-      newRecipeName : value,
-    })
-  }
+  // handleRecipeNameChange = (e) => {
+  //   const value = e.target.value;
+  //   this.setState({ 
+  //     newRecipeName : value,
+  //   })
+  // }
 
-  handleRecipeInstructionsChange = (e) => {
-    const value = e.target.value;
-    this.setState({
-      newRecipeInstructions : value
-    })
-  }
+  // handleRecipeInstructionsChange = (e) => {
+  //   const value = e.target.value;
+  //   this.setState({
+  //     newRecipeInstructions : value
+  //   })
+  // }
 
   handleChange = (e) => {
     const target = e.target;
@@ -44,12 +42,25 @@ class App extends Component{
   //arrow functions are implicitly bound to the context they are ing
   submitRecipe = (e) => {
     e.preventDefault();
-    this.setState({
-      recipes: [{
-        name: this.state.newRecipeName,
-        instructions: this.state.newRecipeInstructions, //note this only works in the test since 'this' has the state of the wrapper
-      }]
+    let tempRecipes = this.state.recipes;
+    tempRecipes.push({
+      name: this.state.newRecipeName,
+      instructions: this.state.newRecipeInstructions, //note this only works in the test since 'this' has the state of the wrapper
     })
+    this.setState({
+      recipes: tempRecipes
+    })
+  }
+
+  renderRecipes = () => {
+    // console.log(this.state.recipes)
+    // console.log(this.state.recipes[0].name)
+    let output = this.state.recipes.map( recipe => <li key={recipe.name}>{recipe.name}</li>);
+    return(
+      <ul>
+        {output}
+      </ul>
+    )
   }
 
   render() {
@@ -76,9 +87,7 @@ class App extends Component{
         }
         {
           this.state.recipes !== undefined && this.state.recipes.length > 0
-          ? <ul>
-              <li>{this.state.recipes[0].name}</li>
-            </ul> 
+          ? this.renderRecipes()
           : <p> There are no recipes to list.</p>
         }
       </div>

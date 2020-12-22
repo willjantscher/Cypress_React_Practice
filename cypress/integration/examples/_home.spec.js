@@ -51,4 +51,23 @@ describe("Home page", () => {
         })
     })
 
+    it("displays multiple recipes under the 'my recipes' heading after multiple recipes are added through the 'add recipe' form", () => {
+        const addRecipeButton = cy.get('#add-recipe');
+        const instructions1 = '1. do a thing. 2. do another thing.'
+        const instructions2 = '1. this thing you will do for instructions 2. 2. Do more things'
+        const recipeName1 = 'first recipe'
+        const recipeName2 = 'second recipe'
+        addRecipeButton.click().then(() => {
+            cy.get('input[name="newRecipeName"]').type(recipeName1);
+            cy.get('textarea[name="newRecipeInstructions"]').type(instructions1)
+            cy.get('input[type=submit]').click();
+            cy.get('input[name="newRecipeName"]').clear().type(recipeName2);
+            cy.get('textarea[name="newRecipeInstructions"]').clear().type(instructions2)
+            cy.get('input[type=submit]').click();
+        })
+        cy.get('ul').then(() => {
+            cy.get('ul').contains(recipeName1)
+            cy.get('ul').contains(recipeName2)
+        })
+    })
 })

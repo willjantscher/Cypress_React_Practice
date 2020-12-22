@@ -110,6 +110,25 @@ test('recipe name from recipe in state appears in unordered list', () => {
   expect(wrapper.find('li').text()).toEqual(recipeName)
 })
 
+test('submitting multiple recipes stores them all in an unordered list', () => {
+  const wrapper = shallow(<App />)
+  const recipeName1 = 'Korean Beef Tacos';
+  const recipeName2 = 'Pizze'
+  const recipeInstructions1 = 'Kimchi + beef + taco shells';
+  const recipeInstructions2 = 'dough, cheese, sauce';
+
+  const submittedRecipe1 = { name: recipeName1, instructions: recipeInstructions1 }
+  const submittedRecipe2 = { name: recipeName2, instructions: recipeInstructions2 }
+
+  wrapper.setState({
+    recipes: [submittedRecipe1, submittedRecipe2],
+  })
+
+  expect(wrapper.find('li')).toHaveLength(2);
+  expect(wrapper.find('li').at(0).text()).toEqual(recipeName1)
+  expect(wrapper.find('li').at(1).text()).toEqual(recipeName2)
+})
+
 
 
 
