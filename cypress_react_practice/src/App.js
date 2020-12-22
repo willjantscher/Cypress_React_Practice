@@ -7,6 +7,8 @@ class App extends Component{
     super();
     this.state = {
       isAddRecipeFormDisplayed: false,
+      recipes: [],
+      recipeName: "",
     }
   }
 
@@ -15,14 +17,34 @@ class App extends Component{
     this.setState({ isAddRecipeFormDisplayed : !this.state.isAddRecipeFormDisplayed })
   }
 
+  handleRecipeNameChange = (e) => {
+    const value = e.target.value;
+    this.setState({ 
+      newRecipeName : value,
+    })
+  }
+
+  //submit recipe method
+  //arrow functions are implicitly bound to the context they are ing
+  submitRecipe = (e) => {
+    e.preventDefault();
+    this.setState({
+      recipes: [{
+        name: this.state.newRecipeName,
+        instructions: this.state.newRecipeInstructions, //note this only works in the test since 'this' has the state of the wrapper
+      }]
+    })
+  }
+
   render() {
-    const addNewRecipeForm = <form id="recipe-form">
-      <label htmlFor="newRecipeName">Recipe name: </label>
-      <input type="text" name="newRecipeName"/>
-      <label htmlFor="newRecipeInstructions">Instructions: </label>
-      <textarea name="newRecipeInstructions" placeholder="write the recipe instructions here..."/>
-      <input type="submit" />
-    </form>
+    const addNewRecipeForm = 
+      <form id="recipe-form" onSubmit={this.submitRecipe}>
+        <label htmlFor="newRecipeName">Recipe name: </label>
+        <input type="text" name="newRecipeName" onChange={this.handleRecipeNameChange}/>
+        <label htmlFor="newRecipeInstructions">Instructions: </label>
+        <textarea name="newRecipeInstructions" placeholder="write the recipe instructions here..."/>
+        <input type="submit" />
+      </form>
     const addRecipeButton = <button id="add-recipe" onClick={this.toggleAddRecipeForm}>Add Recipe</button>
 
     return (

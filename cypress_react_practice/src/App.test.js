@@ -1,6 +1,7 @@
 import App from './App';
 import React from 'react';
 import { shallow } from 'enzyme';
+import { wrap } from 'yargs';
 
 test('toggleAddRecipeForm() modifies isAddRecipeFormDisplayed state value to toggle visibility of a form on the page', () => {
   const wrapper = shallow(<App />)
@@ -27,3 +28,56 @@ test('the add recipe button onclick calls the toggleaddrecipeform method', () =>
   expect(wrapper.instance().toggleAddRecipeForm).toHaveBeenCalled();    //we have access to tohavebeencalled because of jest.fn()
 
 });
+
+test('submitting the form calls the submitRecipe method', () => {
+  const wrapper = shallow(<App />)
+  wrapper.setState({ isAddRecipeFormDisplayed : true})
+  wrapper.instance().submitRecipe = jest.fn();
+  wrapper.instance().forceUpdate();
+
+  wrapper.find('#recipe-form').simulate("submit");
+  expect(wrapper.instance().submitRecipe).toHaveBeenCalled();   //unit testing, only checking if method is called
+});
+
+test('submitRecipe() modifies the recipes value in state', () => {
+  const wrapper = shallow(<App />)
+  const recipeName = "Wings"
+  const recipeInstructions = "1. Lemmon pepper on that. 2a. Buffalo";
+
+  wrapper.setState({ 
+    isAddRecipeFormDisplayed: true,
+    newRecipeName: recipeName,
+    newRecipeInstructions: recipeInstructions
+  })
+
+  const submittedRecipe = { name: recipeName, instructions: recipeInstructions }
+  const mockPreventDefault = jest.fn();     //mock jest function
+
+  wrapper.find('#recipe-form').simulate('submit', {
+    preventDefault: mockPreventDefault,       //passing in this object to the simulate, second argument for simulate allows options object
+  })
+
+  expect(mockPreventDefault).toHaveBeenCalled();
+  // console.log(wrapper.state())
+  expect(wrapper.state().recipes).toEqual([submittedRecipe])    //will return array of objects 
+
+ 
+
+
+});
+
+test('typing into the recipe name input updates state', () => {
+  const wrapper = shallow(<App />);
+  const recipeName = 'White Bread';
+  const recipeInstructions = 'Flour, water, sugar, salt, yeast';
+
+  wrapper.setState({
+    isAddRecipeFormDisplayed: true,
+  })
+//Events: event-bubbling
+  wrapper.find('input[name="newRecipeName"]').simulate("change", {    //change simulates alteration to input/select/textarea when value is commited by user
+    target: {name: 'newRecipeName', value: recipeName}    //target is an object
+  })    
+
+  expect(wrapper.state().newRecipeName).toEqual(recipeName);
+})
